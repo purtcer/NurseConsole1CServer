@@ -5,8 +5,7 @@
  */
 package nurseconsole1cserver;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -23,36 +22,40 @@ public class Properties {
      * Записывает список серверов 1С, которые необходимо провверять
      * @param CentralServers список центральных серверов 1С, которые необходимо хранить
      */
-    public void setCentralServers(ArrayList<List<String>> CentralServers){
+    public void setCentralServers(Vector CentralServers){
         ClearCentralServers();
         PreferencesCentralServers = Preferences.userRoot().node(PreferenceServer);
         int leightCentralServers = CentralServers.size();
         for (int i = 0; i < leightCentralServers; i++) {
             String NumServer = Integer.toString(i);
             String ServerNum = serverNodeName + NumServer;
-            PreferencesCentralServerNode = PreferencesCentralServers.userRoot().node(ServerNum);
-            AddCentralServerToPreferences(PreferencesCentralServerNode, CentralServers.get(i));
+            PreferencesCentralServerNode = PreferencesCentralServers.node(ServerNum);
+            AddCentralServerToPreferences(PreferencesCentralServerNode, (Object[])(CentralServers.get(i)));
         }
     }
     
-    public ArrayList<List<String>> getCentralServers(){
+    /**
+     * Получает ранее сохраненный список серверов 1С,  которые необходимо провверять
+     * @return список центральных серверов 1С, которые необходимо хранить
+     */
+    public Vector getCentralServers(){
         
         PreferencesCentralServers = Preferences.userRoot().node(PreferenceServer);
         int leightCentralServers = 0;
         String[] centralServersPreference;
         try {
-            centralServersPreference = PreferencesCentralServers.keys();
+            centralServersPreference = PreferencesCentralServers.childrenNames();
             leightCentralServers = centralServersPreference.length;
         } catch (BackingStoreException ex) {
             Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList<List<String>> CentralServers = new ArrayList<List<String>>();
+        Vector CentralServers = new Vector();
         if (leightCentralServers > 0){
             for (int i = 0; i < leightCentralServers; i++) {
                 String NumServer = Integer.toString(i);
                 String ServerNum = serverNodeName + NumServer;
-                PreferencesCentralServerNode = PreferencesCentralServers.userRoot().node(ServerNum);
-                ArrayList<String> nodeServer = getNodeServer(PreferencesCentralServerNode);
+                PreferencesCentralServerNode = PreferencesCentralServers.node(ServerNum);
+                Object[] nodeServer = serverSettings(PreferencesCentralServerNode);
                 CentralServers.add(nodeServer);
             }
         }        
@@ -60,9 +63,6 @@ public class Properties {
         return CentralServers;        
     }
     
-    /**
-     * Очищает список ранее хранимых серверов
-     */
     private void ClearCentralServers(){
         PreferencesCentralServers = Preferences.userRoot().node(PreferenceServer);
         try {
@@ -72,30 +72,18 @@ public class Properties {
         }
     }
     
-    /**
-     * Записывает сервер 1С в настройки приложения
-     * @param PreferencesCentralServerNode Узел настройки сервера
-     * @param CentralServerElement данные о сохраняемом сервере
-     */
-    private void AddCentralServerToPreferences(Preferences PreferencesCentralServerNode, List<String> CentralServerElement) {
-        PreferencesCentralServerNode.put("ServerVersion", CentralServerElement.get(0));
-        PreferencesCentralServerNode.put("NetProtocol", CentralServerElement.get(1));
-        PreferencesCentralServerNode.put("ServerPC", CentralServerElement.get(2));
-        PreferencesCentralServerNode.put("ServerPort", CentralServerElement.get(3));
+    private void AddCentralServerToPreferences(Preferences PreferencesCentralServerNode, Object[] CentralServerElement) {
+        PreferencesCentralServerNode.put("ServerVersion", (String)CentralServerElement[0]);
+        PreferencesCentralServerNode.put("ServerPC", (String)CentralServerElement[1]);
+        PreferencesCentralServerNode.put("ServerPort", (String)CentralServerElement[2]);
     }
     
-    private ArrayList<String> getNodeServer(Preferences PreferencesCentralServerNode){
+    private Object[] serverSettings(Preferences PreferencesCentralServerNode){
         
-        ArrayList<String> nodeServer = new ArrayList<String>();
-        String nodeValue = "";
-        PreferencesCentralServerNode.get("ServerVersion", nodeValue);
-        nodeServer.add(nodeValue);
-        PreferencesCentralServerNode.get("NetProtocol", nodeValue);
-        nodeServer.add(nodeValue);
-        PreferencesCentralServerNode.get("ServerPC", nodeValue);
-        nodeServer.add(nodeValue);
-        PreferencesCentralServerNode.get("ServerPort", nodeValue);
-        nodeServer.add(nodeValue);
+        String serverVersion =  PreferencesCentralServerNode.get("ServerVersion", "");
+        String serverPC =  PreferencesCentralServerNode.get("ServerPC", "");
+        String serverPort =  PreferencesCentralServerNode.get("ServerPort", "");
+        Object[] nodeServer = {serverVersion, serverPC, serverPort};
         
         return nodeServer;
     }
