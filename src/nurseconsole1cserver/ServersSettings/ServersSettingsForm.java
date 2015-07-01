@@ -3,33 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nurseconsole1cserver;
+package nurseconsole1cserver.ServersSettings;
 
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 /**
  *
  * @author User
  */
-public class ServersSettings extends javax.swing.JFrame {
-    serversModel serversTableModel;
+public class ServersSettingsForm extends javax.swing.JFrame {
+    ServersTableModel serversTableModel;
     /**
      * Creates new form ServersSettings
      */
-    public ServersSettings() {
-        
+    public ServersSettingsForm() {        
         initComponents();
-        Properties serversSettings = new Properties();
+        ServersSettingsStorage serversSettings = new ServersSettingsStorage();
         Vector serversTableData = serversSettings.getCentralServers();
-        serversTableModel = new serversModel(serversTableData);
+        serversTableModel = new ServersTableModel(serversTableData);
         serversList.setModel(serversTableModel);
-        
     }
 
     /**
@@ -44,9 +37,9 @@ public class ServersSettings extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         serversList = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        serverVersionLabel = new javax.swing.JLabel();
+        serverAddressLabel = new javax.swing.JLabel();
+        serverPortLabel = new javax.swing.JLabel();
         serverTestConnect = new javax.swing.JButton();
         serverPort = new javax.swing.JTextField();
         serverAddress = new javax.swing.JTextField();
@@ -88,11 +81,11 @@ public class ServersSettings extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Настройки сервера"));
 
-        jLabel1.setText("Версия сервера:");
+        serverVersionLabel.setText("Версия сервера:");
 
-        jLabel2.setText("Компьютер:");
+        serverAddressLabel.setText("Компьютер:");
 
-        jLabel3.setText("Порт:");
+        serverPortLabel.setText("Порт:");
 
         serverTestConnect.setText("Проверить подключение");
         serverTestConnect.setMaximumSize(new java.awt.Dimension(162, 23));
@@ -123,9 +116,9 @@ public class ServersSettings extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                            .addComponent(serverVersionLabel)
+                            .addComponent(serverPortLabel)
+                            .addComponent(serverAddressLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(serverPort)
@@ -144,14 +137,14 @@ public class ServersSettings extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(serverVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(serverVersionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(serverAddressLabel)
                     .addComponent(serverAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(serverPortLabel)
                     .addComponent(serverPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,8 +200,8 @@ public class ServersSettings extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Exit)
                     .addComponent(Save)
@@ -219,7 +212,6 @@ public class ServersSettings extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void serverAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverAddActionPerformed
-        
         if (isAllFielsFilled()){
             String serverVersionValue = (String)(serverVersion.getSelectedItem());
             String serverAddressValue = serverAddress.getText();
@@ -229,7 +221,6 @@ public class ServersSettings extends javax.swing.JFrame {
             serversList.setModel(serversTableModel);
             serversList.updateUI();
         }
-        
     }//GEN-LAST:event_serverAddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -238,15 +229,15 @@ public class ServersSettings extends javax.swing.JFrame {
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         Vector serversTableData = serversTableModel.getTableData();
-        Properties serversSettings = new Properties();
+        ServersSettingsStorage serversSettings = new ServersSettingsStorage();
         serversSettings.setCentralServers(serversTableData);
     }//GEN-LAST:event_SaveActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
         int selectedRow = serversList.getSelectedRow();
         serversTableModel.delleteRowTable(selectedRow);
-            serversList.setModel(serversTableModel);
-            serversList.updateUI();
+        serversList.setModel(serversTableModel);
+        serversList.updateUI();
     }//GEN-LAST:event_DeleteActionPerformed
 
     /**
@@ -266,20 +257,21 @@ public class ServersSettings extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ServersSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServersSettingsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ServersSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServersSettingsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ServersSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServersSettingsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServersSettings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServersSettingsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new ServersSettings().setVisible(true);
+                new ServersSettingsForm().setVisible(true);
             }
         });
     }
@@ -305,16 +297,16 @@ public class ServersSettings extends javax.swing.JFrame {
     private javax.swing.JButton Delete;
     private javax.swing.JButton Exit;
     private javax.swing.JButton Save;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton serverAdd;
     private javax.swing.JTextField serverAddress;
+    private javax.swing.JLabel serverAddressLabel;
     private javax.swing.JTextField serverPort;
+    private javax.swing.JLabel serverPortLabel;
     private javax.swing.JButton serverTestConnect;
     private javax.swing.JComboBox serverVersion;
+    private javax.swing.JLabel serverVersionLabel;
     private javax.swing.JTable serversList;
     // End of variables declaration//GEN-END:variables
 }

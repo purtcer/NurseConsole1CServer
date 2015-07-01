@@ -1,10 +1,13 @@
 package nurseconsole1cserver;
+
+import nurseconsole1cserver.ServersSettings.ServersSettingsForm;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nurseconsole1cserver.Notifications.EventsSettingsForm;
 
 public class NurseConsole1CServer {
 
@@ -15,7 +18,11 @@ public class NurseConsole1CServer {
         
         PopupMenu popup = new PopupMenu();
         
-        MenuItem settingsItem = new MenuItem("Сервера");
+        MenuItem notificationItem = new MenuItem("Настройки уведомлений");
+        notificationItem.addActionListener(new NotificationButtonClick());
+        popup.add(notificationItem);
+        
+        MenuItem settingsItem = new MenuItem("Настройки серверов 1С");
         settingsItem.addActionListener(new ServersSettingsButtonClick());
         popup.add(settingsItem);
         
@@ -24,7 +31,7 @@ public class NurseConsole1CServer {
         popup.add(exitItem);
         
         SystemTray systemTray = SystemTray.getSystemTray();
-        String imageUrl = new File("").getAbsolutePath() + "\\Good.png";
+        URL imageUrl = NurseConsole1CServer.class.getResource("Images/Circle_Green.png");
         Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
         
         TrayIcon trayIcon = new TrayIcon(image);
@@ -39,15 +46,25 @@ public class NurseConsole1CServer {
     }
     
     static class ExitButtonClick implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
     
     static class ServersSettingsButtonClick implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
-            ServersSettings serververSettingsForm = new ServersSettings();
+            ServersSettingsForm serververSettingsForm = new ServersSettingsForm();
             serververSettingsForm.show();
+        }
+    }
+    
+    static class NotificationButtonClick implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            EventsSettingsForm eventsSettingsForm = new EventsSettingsForm();
+            eventsSettingsForm.show();
         }
     }
     

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nurseconsole1cserver;
+package nurseconsole1cserver.ServersSettings;
 
 import java.util.Vector;
 import java.util.logging.Level;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-public class Properties {
+public class ServersSettingsStorage {
     
     Preferences PreferencesCentralServers;
     Preferences PreferencesCentralServerNode;
@@ -39,7 +39,6 @@ public class Properties {
      * @return список центральных серверов 1С, которые необходимо хранить
      */
     public Vector getCentralServers(){
-        
         PreferencesCentralServers = Preferences.userRoot().node(PreferenceServer);
         int leightCentralServers = 0;
         String[] centralServersPreference;
@@ -47,7 +46,7 @@ public class Properties {
             centralServersPreference = PreferencesCentralServers.childrenNames();
             leightCentralServers = centralServersPreference.length;
         } catch (BackingStoreException ex) {
-            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServersSettingsStorage.class.getName()).log(Level.SEVERE, null, ex);
         }
         Vector CentralServers = new Vector();
         if (leightCentralServers > 0){
@@ -58,9 +57,9 @@ public class Properties {
                 Object[] nodeServer = serverSettings(PreferencesCentralServerNode);
                 CentralServers.add(nodeServer);
             }
-        }        
+        }
         
-        return CentralServers;        
+        return CentralServers;
     }
     
     private void ClearCentralServers(){
@@ -68,7 +67,7 @@ public class Properties {
         try {
             PreferencesCentralServers.clear();
         } catch (BackingStoreException ex) {
-            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServersSettingsStorage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -79,7 +78,6 @@ public class Properties {
     }
     
     private Object[] serverSettings(Preferences PreferencesCentralServerNode){
-        
         String serverVersion =  PreferencesCentralServerNode.get("ServerVersion", "");
         String serverPC =  PreferencesCentralServerNode.get("ServerPC", "");
         String serverPort =  PreferencesCentralServerNode.get("ServerPort", "");

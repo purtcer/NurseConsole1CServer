@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nurseconsole1cserver;
+package nurseconsole1cserver.ServersSettings;
 
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -12,12 +12,12 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author User
  */
-    public class serversModel extends AbstractTableModel{
+    public class ServersTableModel extends AbstractTableModel{
     
     private String[] columnNames = {"Версия 1С", "Компьютер", "Порт"};
     private Vector data = new Vector();
     
-    public serversModel(Vector serversList){
+    public ServersTableModel(Vector serversList){
         data.clear();
         int sizeServersList = serversList.size();
         for (int i = 0; i < sizeServersList; i++) {
@@ -25,7 +25,7 @@ import javax.swing.table.AbstractTableModel;
         }
     }
     
-    public serversModel(){
+    public ServersTableModel(){
         
     }
     
@@ -57,6 +57,7 @@ import javax.swing.table.AbstractTableModel;
         return rowData[i1]; //To change body of generated methods, choose Tools | Templates.
     }
     
+    @Override
     public String getColumnName(int col) {
         return columnNames[col];
     }
