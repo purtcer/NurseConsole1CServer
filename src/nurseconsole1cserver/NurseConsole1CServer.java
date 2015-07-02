@@ -7,10 +7,14 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 import nurseconsole1cserver.Notifications.EventsSettingsForm;
 
 public class NurseConsole1CServer {
 
+    static TrayIcon trayIcon;
+    static Integer timerPeriod = 1000 * 60 * 1;
+    static Timer timerServersTest = new Timer(timerPeriod, new TimerActivationEvents());
     /**
      * @param args the command line arguments
      */
@@ -31,10 +35,9 @@ public class NurseConsole1CServer {
         popup.add(exitItem);
         
         SystemTray systemTray = SystemTray.getSystemTray();
-        URL imageUrl = NurseConsole1CServer.class.getResource("Images/Circle_Green.png");
-        Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
+        Image image = getImageTray(true);
         
-        TrayIcon trayIcon = new TrayIcon(image);
+        trayIcon = new TrayIcon(image);
         trayIcon.setImageAutoSize(true);
         trayIcon.setPopupMenu(popup);
         try {
@@ -42,7 +45,15 @@ public class NurseConsole1CServer {
         } catch (AWTException ex) {
             Logger.getLogger(NurseConsole1CServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        timerServersTest.start();
+    }
+    
+    private static Image getImageTray(Boolean isGood){
+        String imageName = (isGood)?("Circle_Green.png"):("Circle_Red.png");
+        URL imageUrl = NurseConsole1CServer.class.getResource("Images/" + imageName);
+        Image image = Toolkit.getDefaultToolkit().getImage(imageUrl);
         
+        return image;
     }
     
     static class ExitButtonClick implements ActionListener {
@@ -65,6 +76,16 @@ public class NurseConsole1CServer {
         public void actionPerformed(ActionEvent e) {
             EventsSettingsForm eventsSettingsForm = new EventsSettingsForm();
             eventsSettingsForm.show();
+        }
+    }
+    
+    static class TimerActivationEvents implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            timerServersTest.stop();
+            Image image = getImageTray(false);
+            trayIcon.setImage(image);
+            timerServersTest.start();
         }
     }
     
