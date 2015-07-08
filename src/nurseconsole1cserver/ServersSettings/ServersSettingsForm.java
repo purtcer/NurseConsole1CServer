@@ -49,7 +49,7 @@ public class ServersSettingsForm extends javax.swing.JFrame {
         Save = new javax.swing.JButton();
         Delete = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         serversList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

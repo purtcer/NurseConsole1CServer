@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
 import nurseconsole1cserver.Notifications.EventsSettingsForm;
+import nurseconsole1cserver.ServerAuthentication.ServerAuthenticationForm;
 
 public class NurseConsole1CServer {
 
@@ -21,6 +22,10 @@ public class NurseConsole1CServer {
     public static void main(String[] args) {
         
         PopupMenu popup = new PopupMenu();
+        
+        MenuItem authenticationItem = new MenuItem("Авторизация");
+        authenticationItem.addActionListener(new AuthenticationButtonClick());
+        popup.add(authenticationItem);
         
         MenuItem notificationItem = new MenuItem("Настройки уведомлений");
         notificationItem.addActionListener(new NotificationButtonClick());
@@ -79,6 +84,14 @@ public class NurseConsole1CServer {
         }
     }
     
+    static class AuthenticationButtonClick implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ServerAuthenticationForm serverAuthenticationSettingsForm = new ServerAuthenticationForm();
+            serverAuthenticationSettingsForm.show();
+        }
+    }
+    
     static class TimerActivationEvents implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -88,5 +101,4 @@ public class NurseConsole1CServer {
             timerServersTest.start();
         }
     }
-    
 }

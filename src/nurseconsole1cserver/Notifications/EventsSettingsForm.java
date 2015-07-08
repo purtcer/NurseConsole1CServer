@@ -41,7 +41,7 @@ public class EventsSettingsForm extends javax.swing.JFrame {
         calendarClientId = new javax.swing.JTextField();
         calendarEMail = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         Save.setText("Сохранить");
         Save.addActionListener(new java.awt.event.ActionListener() {
