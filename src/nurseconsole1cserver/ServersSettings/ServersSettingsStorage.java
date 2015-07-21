@@ -78,9 +78,9 @@ public class ServersSettingsStorage {
     }
     
     private Object[] serverSettings(Preferences PreferencesCentralServerNode){
-        String serverVersion =  PreferencesCentralServerNode.get("ServerVersion", "");
-        String serverPC =  PreferencesCentralServerNode.get("ServerPC", "");
-        String serverPort =  PreferencesCentralServerNode.get("ServerPort", "");
+        String serverVersion = PreferencesCentralServerNode.get("ServerVersion", "");
+        String serverPC = PreferencesCentralServerNode.get("ServerPC", "");
+        String serverPort = PreferencesCentralServerNode.get("ServerPort", "");
         Object[] nodeServer = {serverVersion, serverPC, serverPort};
         
         return nodeServer;
